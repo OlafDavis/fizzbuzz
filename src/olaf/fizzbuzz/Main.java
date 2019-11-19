@@ -5,34 +5,47 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        String output;
-        Boolean isReverse;                                                                                                  // indicates reversed order, if n is mult of 17
+        StringList output;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter highest number:");
         int maxN = scanner.nextInt();
         for(var n = 1; n <= maxN; n++) {
-            isReverse = (n % 17 == 0);
-	        output = "";
+            StringBuilder emptyBuilder = new StringBuilder();
+	        output = new StringList(emptyBuilder, (n % 17 == 0));
             if (n % 11 == 0) {
-                if (n % 13 == 0) output = addString(output, "Fezz", isReverse);
-                output = addString(output, "Bong", isReverse);
+                if (n % 13 == 0) output.add("Fezz");
+                output.add("Bong");
             } else {
-                if (n % 3 == 0) output = addString(output, "Fizz", isReverse);
-                if (n % 13 == 0) output = addString(output, "Fezz", isReverse);
-                if (n % 5 == 0) output = addString(output, "Buzz", isReverse);
-                if (n % 7 == 0) output = addString(output, "Bang", isReverse);
-                if (output.equals("")) output = Integer.toString(n);
+                if (n % 3 == 0) output.add("Fizz");
+                if (n % 13 == 0) output.add("Fezz");
+                if (n % 5 == 0) output.add("Buzz");
+                if (n % 7 == 0) output.add("Bang");
             };
-            System.out.println(n + ": " + output);
+            if (output.length() == 0) output.add(Integer.toString(n));
+            System.out.println(n + ": " + output.output());
         }
     }
 
-    static String addString(String oldString, String stringToAdd, Boolean reverseOrder) {
-        if (reverseOrder) {                                                                                             // reverseOrder means add new string to left instead of right
-            return stringToAdd + oldString;
+}
+
+class StringList {
+    StringBuilder sb;
+    Boolean isReverse;
+    public StringList(StringBuilder startBuilder, Boolean startIsReverse) {
+        sb = startBuilder;
+        isReverse = startIsReverse;
+    }
+    public void add(String str) {
+        if (isReverse) {
+            sb.insert(0, str);
         } else {
-            return oldString + stringToAdd;
+            sb.append(str);
         }
     }
-
+    public StringBuilder output() {
+        return sb;
+    }
+    public Integer length() {
+        return sb.length();
+    }
 }
